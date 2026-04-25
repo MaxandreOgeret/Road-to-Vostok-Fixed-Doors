@@ -1,0 +1,11 @@
+[mod]
+name="Fixed Doors"
+id="fixed_doors"
+version="1.0.0"
+priority=10
+
+[autoload]
+FixedDoors="res://FixedDoors/Main.gd"
+
+[updates]
+modworkshop=56381
