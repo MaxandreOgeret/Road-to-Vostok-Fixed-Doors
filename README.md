@@ -6,13 +6,15 @@
 
 The mod leaves the base door script in charge of locking, jamming, occupied-door checks, audio, handle motion, and animation. When the player is looking at a closed door, the mod adjusts that door's `openAngle` before the game's own interaction call runs, so the next open swing moves to the side opposite the player.
 
-Doors still close through the game's normal behavior. Locked, jammed, and occupied doors are not bypassed.
+Doors are only collidable with the player when fully closed. Open, opening, and closing doors no longer block movement, but they stay interactable so they can still be closed normally.
+
+Locked, jammed, and occupied doors are not bypassed.
 
 ## Compatibility
 
-`Fixed Doors` does not override `Door.gd`, `Interactor.gd`, or any scene files. It only changes a targeted closed door's `openAngle` immediately before interaction.
+`Fixed Doors` does not override `Door.gd`, `Interactor.gd`, or any scene files.
 
-Because it changes live door state, other mods that also rewrite door opening direction may conflict.
+Other mods that rewrite door opening direction or door collision behavior may conflict.
 
 ## Repository Layout
 
@@ -66,7 +68,7 @@ The mod requires `Road to Vostok` and the community mod loader format used by th
 
 ## Licensing
 
-The repository code is MIT licensed. See [LICENSE](LICENSE).
+The repository code is GPL-3.0 licensed. See [LICENSE](LICENSE).
 
 ## References
 

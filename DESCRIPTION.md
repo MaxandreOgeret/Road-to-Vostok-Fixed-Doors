@@ -11,6 +11,8 @@ The goal is simple: fewer awkward door swings, less backing up from doors, and a
 ## Features
 
 - Normal hinged doors open away from the player
+- Open, opening, and closing doors no longer block player movement
+- Door bodies stay interactable while pass-through is active
 - Keeps the game's existing door interaction flow
 - Preserves locked doors, jammed doors, occupied-door checks, sounds, handle animation, and close behavior
 - Does not replace `Door.gd`, `Interactor.gd`, or scene files
@@ -18,15 +20,15 @@ The goal is simple: fewer awkward door swings, less backing up from doors, and a
 
 ## Why Use It
 
-Door swings are a small detail, but they matter when moving through tight interiors. Fixed Doors makes door behavior more predictable without changing the rest of the interaction system.
+Door swings are a small detail, but they matter when moving through tight interiors. Fixed Doors makes door behavior more predictable and keeps doors from blocking narrow paths unless they are fully closed.
 
 It is meant to feel like the same doors, just with the opening direction corrected at the moment you interact with them.
 
 ## Compatibility
 
-Fixed Doors should be compatible with mods that do not change door opening direction.
+Fixed Doors should be compatible with mods that do not change door opening direction or door collision behavior.
 
-Other mods that also modify live door angles or rewrite the game's door interaction behavior may conflict.
+Other mods that change those same door behaviors may conflict.
 
 ## Source Code
 

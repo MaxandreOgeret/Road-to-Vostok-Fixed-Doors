@@ -16,9 +16,10 @@ The mod relies on normal interactable doors exposing these fields and methods:
 - `defaultPosition`
 - `defaultRotation`
 - `Interact()`
-- `UpdateTooltip()`
 
-The base script currently toggles `isOpen` inside `Interact()` and animates toward `defaultRotation + openAngle`. `Fixed Doors` adjusts only `openAngle` while the door is closed, before the game's own interaction call runs. Locks, jammed doors, occupied doors, audio, handle motion, and close behavior stay owned by the base script.
+The base script currently toggles `isOpen` inside `Interact()` and animates toward `defaultRotation + openAngle`. `Fixed Doors` adjusts only `openAngle` while the door is closed, before the game's own interaction call runs.
+
+When a door is not fully closed, the mod lets the player pass through it while keeping it interactable. Normal collision returns when the door is closed again.
 
 ## Interactor Lookup
 
@@ -28,6 +29,8 @@ Reference files from the decompiled game:
 - `res://Scripts/Interactor.gd`
 
 The mod first checks known interactor paths, then falls back to finding a `RayCast3D` named `Interactor` under the current scene. If the player/interactor scene layout changes, update `INTERACTOR_PATHS` in `FixedDoors/Main.gd`.
+
+The mod uses the live interactor target to find the door the player is using. If the player/interactor scene layout changes, update `INTERACTOR_PATHS` in `FixedDoors/Main.gd`.
 
 ## Door Side Calculation
 
