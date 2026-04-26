@@ -66,7 +66,7 @@ func _build_default_config() -> ConfigFile:
 			"Bool",
 			OPENED_DOOR_COLLISION_KEY,
 			{
-				"name": "Opened Door Collision",
+				"name": "Opened Door Collision (Newly Opened Only)",
 				"tooltip":
 				(
 					"Keep open, opening, and closing doors collidable after this is enabled."
