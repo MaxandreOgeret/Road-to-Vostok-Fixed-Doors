@@ -8,6 +8,8 @@ The mod leaves the base door script in charge of locking, jamming, occupied-door
 
 Doors are only collidable with the player when fully closed. Open, opening, and closing doors no longer block movement, but they stay interactable so they can still be closed normally.
 
+When Mod Configuration Menu is installed, `Opened Door Collision` can be enabled to keep open, opening, and closing doors collidable.
+
 Locked, jammed, and occupied doors are not bypassed.
 
 ## Compatibility
@@ -18,7 +20,7 @@ Other mods that rewrite door opening direction or door collision behavior may co
 
 ## Repository Layout
 
-The packaged mod consists of `mod.txt` and the `FixedDoors/` directory. Runtime logic lives in `FixedDoors/Main.gd`.
+The packaged mod consists of `mod.txt` and the `FixedDoors/` directory. Runtime logic lives in `FixedDoors/Main.gd`, and MCM configuration lives in `FixedDoors/Config.gd`.
 
 The repository also includes [doc/game-sync.md](doc/game-sync.md), which documents the parts of the mod that intentionally depend on decompiled game logic and should be reviewed after a game update.
 
@@ -64,7 +66,7 @@ Override that destination with `RTV_MODS_DIR`.
 
 ## Requirements
 
-The mod requires `Road to Vostok` and the community mod loader format used by the game.
+The mod requires `Road to Vostok` and the community mod loader format used by the game. `Mod Configuration Menu` is optional and only needed to change the opened-door collision setting in game.
 
 ## Licensing
 

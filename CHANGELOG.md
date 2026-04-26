@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Added an MCM toggle for opened-door collision.
+
 ## 1.0.1
 
 - Doors are only collidable when fully closed while still remaining interactable.

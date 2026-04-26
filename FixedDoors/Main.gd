@@ -1,6 +1,8 @@
 extends Node
 
 const BASE_OPEN_ANGLE_META := &"fixed_doors_base_open_angle"
+const CONFIG_AUTOLOAD_PATH := "/root/FixedDoorsConfig"
+const OPENED_DOOR_COLLISION_KEY := "opened_door_collision"
 const INTERACTOR_PATHS := [
 	"/root/Map/Core/Interactor",
 	"/root/Map/Core/Player/Interactor",
@@ -22,12 +24,15 @@ var _active_doors: Dictionary = {}
 var _current_scene: Node
 var _player_colliders: Array[CollisionObject3D] = []
 var _last_interact_frame := -1
+var _opened_door_collision_enabled := false
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(false)
 	set_physics_process(false)
+	_sync_runtime_settings(true)
+	_connect_config()
 
 	var tree := get_tree()
 	if tree != null:
@@ -41,6 +46,7 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	_reset_scene_cache_if_needed()
+	_sync_runtime_settings()
 
 	_sync_active_door_collisions()
 
@@ -217,6 +223,62 @@ func _register_collision_object(node: Node) -> void:
 		_sync_door_collision(door, _door_records[door.get_instance_id()])
 
 
+func _connect_config() -> void:
+	var config := get_node_or_null(CONFIG_AUTOLOAD_PATH)
+	if config == null or not config.has_signal("settings_changed"):
+		return
+	if not config.is_connected("settings_changed", Callable(self, "_on_settings_changed")):
+		config.connect("settings_changed", Callable(self, "_on_settings_changed"))
+
+
+func _on_settings_changed() -> void:
+	_sync_runtime_settings(true)
+
+
+func _sync_runtime_settings(force: bool = false) -> void:
+	var enabled := _opened_door_collision_setting()
+	if not force and enabled == _opened_door_collision_enabled:
+		return
+
+	_opened_door_collision_enabled = enabled
+	_sync_all_tracked_door_collisions()
+
+
+func _opened_door_collision_setting() -> bool:
+	var config := get_node_or_null(CONFIG_AUTOLOAD_PATH)
+	if config != null and config.has_method("get_bool"):
+		return bool(config.call("get_bool", OPENED_DOOR_COLLISION_KEY, false))
+
+	var config_file := ConfigFile.new()
+	if config_file.load("user://MCM/FixedDoors/config.ini") == OK:
+		var value: Variant = config_file.get_value("Bool", OPENED_DOOR_COLLISION_KEY, false)
+		if value is Dictionary:
+			return bool((value as Dictionary).get("value", false))
+		return bool(value)
+
+	return false
+
+
+func _sync_all_tracked_door_collisions() -> void:
+	for door_id in _door_records.keys():
+		var record: Dictionary = _door_records.get(door_id, {})
+		var door: Variant = record.get("door")
+		if record.is_empty() or not is_instance_valid(door):
+			continue
+
+		var interaction_only := _sync_door_collision(door as Node3D, record)
+		if interaction_only:
+			_active_doors[door_id] = Engine.get_physics_frames() + ACTIVE_DOOR_MAX_FRAMES
+
+	if _opened_door_collision_enabled:
+		_active_doors.clear()
+		set_process(false)
+		return
+
+	if not _active_doors.is_empty():
+		set_process(true)
+
+
 func _track_door(door: Node3D, collider: CollisionObject3D = null) -> void:
 	var door_id := door.get_instance_id()
 	var record := _door_records.get(door_id, {})
@@ -237,6 +299,10 @@ func _track_door(door: Node3D, collider: CollisionObject3D = null) -> void:
 
 func _activate_door(door: Node3D) -> void:
 	var door_id := door.get_instance_id()
+	if _opened_door_collision_enabled:
+		_active_doors.erase(door_id)
+		return
+
 	var record: Dictionary = _door_records.get(door_id, {})
 	if not record.is_empty():
 		record["active_started_interaction_only"] = bool(
@@ -279,7 +345,10 @@ func _sync_door_collision(door: Node3D, record: Dictionary) -> bool:
 	if colliders.is_empty():
 		colliders.append_array(_door_interactable_colliders(door))
 
-	var interaction_only := not _door_is_fully_closed(door, bool(record["has_animation_time"]))
+	var interaction_only := (
+		not _opened_door_collision_enabled
+		and not _door_is_fully_closed(door, bool(record["has_animation_time"]))
+	)
 	if record.has("interaction_only") and bool(record["interaction_only"]) == interaction_only:
 		return interaction_only
 

@@ -1,10 +1,11 @@
 [mod]
 name="Fixed Doors"
 id="fixed_doors"
-version="1.0.0"
+version="1.0.2"
 priority=10
 
 [autoload]
+FixedDoorsConfig="res://FixedDoors/Config.gd"
 FixedDoors="res://FixedDoors/Main.gd"
 
 [updates]
