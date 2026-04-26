@@ -3,6 +3,7 @@
 ## 1.0.2
 
 - Added an MCM toggle for opened-door collision.
+- Clarified that the opened-door collision toggle may not reset doors already made pass-through.
 
 ## 1.0.1
 

@@ -67,7 +67,12 @@ func _build_default_config() -> ConfigFile:
 			OPENED_DOOR_COLLISION_KEY,
 			{
 				"name": "Opened Door Collision",
-				"tooltip": "Keep open, opening, and closing doors collidable with the player.",
+				"tooltip":
+				(
+					"Keep open, opening, and closing doors collidable after this is enabled."
+					+ " Doors already made pass-through may stay that way until they are"
+					+ " closed or the map is reloaded."
+				),
 				"default": false,
 				"value": false,
 				"menu_pos": 10,
