@@ -8,6 +8,7 @@ const CONFIG_DIR := "user://MCM/%s" % MOD_ID
 const CONFIG_FILE := "config.ini"
 const MCM_HELPERS_RES := "res://ModConfigurationMenu/Scripts/Doink Oink/MCM_Helpers.tres"
 const OPENED_DOOR_COLLISION_KEY := "opened_door_collision"
+const MOVING_DOOR_COLLISION_KEY := "moving_door_collision"
 
 var _config := ConfigFile.new()
 var _mcm_helpers: Resource
@@ -76,6 +77,20 @@ func _build_default_config() -> ConfigFile:
 				"default": false,
 				"value": false,
 				"menu_pos": 10,
+			}
+		)
+	)
+	(
+		config
+		. set_value(
+			"Bool",
+			MOVING_DOOR_COLLISION_KEY,
+			{
+				"name": "Opening/Closing Door Collision",
+				"tooltip": "Keep doors collidable while they are opening or closing.",
+				"default": false,
+				"value": false,
+				"menu_pos": 20,
 			}
 		)
 	)
