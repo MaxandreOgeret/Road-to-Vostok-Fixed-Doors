@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Fixed opened-door collision setting changes not being applied to the next door interaction in some cases.
+
 ## 1.0.2
 
 - Added an MCM toggle for opened-door collision.

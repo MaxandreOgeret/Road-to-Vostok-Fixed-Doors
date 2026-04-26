@@ -59,6 +59,7 @@ func _handle_interact_pressed() -> void:
 	if _last_interact_frame == frame:
 		return
 	_last_interact_frame = frame
+	_sync_runtime_settings(true)
 
 	var interactor := _resolve_interactor()
 	if interactor == null:
@@ -241,7 +242,6 @@ func _sync_runtime_settings(force: bool = false) -> void:
 		return
 
 	_opened_door_collision_enabled = enabled
-	_sync_all_tracked_door_collisions()
 
 
 func _opened_door_collision_setting() -> bool:
@@ -257,26 +257,6 @@ func _opened_door_collision_setting() -> bool:
 		return bool(value)
 
 	return false
-
-
-func _sync_all_tracked_door_collisions() -> void:
-	for door_id in _door_records.keys():
-		var record: Dictionary = _door_records.get(door_id, {})
-		var door: Variant = record.get("door")
-		if record.is_empty() or not is_instance_valid(door):
-			continue
-
-		var interaction_only := _sync_door_collision(door as Node3D, record)
-		if interaction_only:
-			_active_doors[door_id] = Engine.get_physics_frames() + ACTIVE_DOOR_MAX_FRAMES
-
-	if _opened_door_collision_enabled:
-		_active_doors.clear()
-		set_process(false)
-		return
-
-	if not _active_doors.is_empty():
-		set_process(true)
 
 
 func _track_door(door: Node3D, collider: CollisionObject3D = null) -> void:
@@ -299,18 +279,21 @@ func _track_door(door: Node3D, collider: CollisionObject3D = null) -> void:
 
 func _activate_door(door: Node3D) -> void:
 	var door_id := door.get_instance_id()
+	var record: Dictionary = _door_records.get(door_id, {})
+	if record.is_empty():
+		return
+
+	record["opened_door_collision_enabled"] = _opened_door_collision_enabled
 	if _opened_door_collision_enabled:
+		_sync_door_collision(door, record)
 		_active_doors.erase(door_id)
 		return
 
-	var record: Dictionary = _door_records.get(door_id, {})
-	if not record.is_empty():
-		record["active_started_interaction_only"] = bool(
-			record.get(
-				"interaction_only",
-				not _door_is_fully_closed(door, bool(record["has_animation_time"]))
-			)
+	record["active_started_interaction_only"] = bool(
+		record.get(
+			"interaction_only", not _door_is_fully_closed(door, bool(record["has_animation_time"]))
 		)
+	)
 	_active_doors[door_id] = Engine.get_physics_frames() + ACTIVE_DOOR_MAX_FRAMES
 	set_process(true)
 
@@ -345,8 +328,11 @@ func _sync_door_collision(door: Node3D, record: Dictionary) -> bool:
 	if colliders.is_empty():
 		colliders.append_array(_door_interactable_colliders(door))
 
+	var opened_door_collision_enabled := bool(
+		record.get("opened_door_collision_enabled", _opened_door_collision_enabled)
+	)
 	var interaction_only := (
-		not _opened_door_collision_enabled
+		not opened_door_collision_enabled
 		and not _door_is_fully_closed(door, bool(record["has_animation_time"]))
 	)
 	if record.has("interaction_only") and bool(record["interaction_only"]) == interaction_only:
