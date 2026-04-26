@@ -1,22 +1,11 @@
 # Changelog
 
-## 1.0.5
+## 1.1.0
 
+- Added MCM toggles for settled-open door collision and opening/closing door collision.
+- Clarified that opened-door collision only applies to newly opened doors.
+- Fixed collision setting changes not being applied to the next door interaction in some cases.
 - Fixed opening/closing door collision detection so the MCM toggle applies while doors are moving.
-
-## 1.0.4
-
-- Added a separate MCM toggle for doors that are opening or closing.
-- Kept opened-door collision separate from moving-door collision.
-
-## 1.0.3
-
-- Fixed opened-door collision setting changes not being applied to the next door interaction in some cases.
-
-## 1.0.2
-
-- Added an MCM toggle for opened-door collision.
-- Clarified that the opened-door collision toggle may not reset doors already made pass-through.
 
 ## 1.0.1
 
