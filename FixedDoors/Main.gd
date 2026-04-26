@@ -383,11 +383,11 @@ func _door_should_be_interaction_only(
 
 
 func _door_is_moving(door: Node3D, has_animation_time: bool) -> bool:
-	return (
-		has_animation_time
-		and _has_property(door, &"animationTime")
-		and float(door.get(&"animationTime")) > 0.0
-	)
+	if _door_is_fully_closed(door, has_animation_time) or _door_is_fully_open(door):
+		return false
+	if has_animation_time and float(door.get(&"animationTime")) > 0.0:
+		return true
+	return not _door_is_fully_closed(door, has_animation_time) and not _door_is_fully_open(door)
 
 
 func _door_has_animation_time(door: Node3D) -> bool:
@@ -417,6 +417,26 @@ func _door_is_fully_closed(door: Node3D, has_animation_time: bool) -> bool:
 		return float(door.get(&"animationTime")) <= 0.0 or is_near_closed
 
 	return is_near_closed
+
+
+func _door_is_fully_open(door: Node3D) -> bool:
+	if not bool(door.get(&"isOpen")):
+		return false
+
+	var default_position: Vector3 = door.get(&"defaultPosition")
+	var default_rotation: Vector3 = door.get(&"defaultRotation")
+	var open_angle: Vector3 = door.get(&"openAngle")
+	var open_offset := Vector3.ZERO
+	if _has_property(door, &"openOffset"):
+		open_offset = door.get(&"openOffset")
+
+	return (
+		door.position.distance_to(default_position + open_offset) <= CLOSED_POSITION_EPSILON
+		and (
+			door.rotation_degrees.distance_to(default_rotation + open_angle)
+			<= CLOSED_ROTATION_EPSILON
+		)
+	)
 
 
 func _door_interactable_colliders(door: Node) -> Array[CollisionObject3D]:

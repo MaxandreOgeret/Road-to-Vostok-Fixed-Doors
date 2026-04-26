@@ -22,7 +22,7 @@ The goal is simple: fewer awkward door swings, less backing up from doors, and a
 
 Door swings are a small detail, but they matter when moving through tight interiors. Fixed Doors makes door behavior more predictable and keeps doors from blocking narrow paths unless they are fully closed.
 
-If Mod Configuration Menu is installed, collision can be configured separately for settled-open doors and doors that are opening or closing.
+If Mod Configuration Menu is installed, collision can be configured separately with `Opened Door Collision (Newly Opened Only)` and `Opening/Closing Door Collision`.
 
 It is meant to feel like the same doors, just with the opening direction corrected at the moment you interact with them.
 

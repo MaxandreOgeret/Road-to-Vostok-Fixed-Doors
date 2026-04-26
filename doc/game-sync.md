@@ -12,14 +12,16 @@ Reference files from the decompiled game:
 The mod relies on normal interactable doors exposing these fields and methods:
 
 - `openAngle`
+- `openOffset`
 - `isOpen`
 - `defaultPosition`
 - `defaultRotation`
+- `animationTime`
 - `Interact()`
 
-The base script currently toggles `isOpen` inside `Interact()` and animates toward `defaultRotation + openAngle`. `Fixed Doors` adjusts only `openAngle` while the door is closed, before the game's own interaction call runs.
+The base script currently toggles `isOpen` inside `Interact()` and animates toward `defaultPosition + openOffset` and `defaultRotation + openAngle`. `Fixed Doors` adjusts only `openAngle` while the door is closed, before the game's own interaction call runs.
 
-When a door is not fully closed, the mod lets the player pass through it while keeping it interactable. Normal collision returns when the door is closed again.
+By default, doors are pass-through unless they are closed. With MCM installed, `Opened Door Collision (Newly Opened Only)` controls settled-open doors, and `Opening/Closing Door Collision` controls doors while they are moving. Normal collision always returns when the door is closed again.
 
 ## Interactor Lookup
 

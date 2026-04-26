@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5
+
+- Fixed opening/closing door collision detection so the MCM toggle applies while doors are moving.
+
 ## 1.0.4
 
 - Added a separate MCM toggle for doors that are opening or closing.

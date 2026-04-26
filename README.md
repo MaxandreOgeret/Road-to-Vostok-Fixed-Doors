@@ -8,7 +8,7 @@ The mod leaves the base door script in charge of locking, jamming, occupied-door
 
 Doors are only collidable with the player when fully closed. Open, opening, and closing doors no longer block movement, but they stay interactable so they can still be closed normally.
 
-When Mod Configuration Menu is installed, `Opened Door Collision` can be enabled for settled-open doors, and `Opening/Closing Door Collision` can be enabled for doors while they are moving.
+When Mod Configuration Menu is installed, `Opened Door Collision (Newly Opened Only)` can be enabled for settled-open doors, and `Opening/Closing Door Collision` can be enabled for doors while they are moving.
 
 Locked, jammed, and occupied doors are not bypassed.
 
