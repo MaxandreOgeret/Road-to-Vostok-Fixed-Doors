@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Restricted VMZ packaging to the runtime mod files plus prefixed `FixedDoors_LICENSE` and `FixedDoors_NOTICE` attribution files.
+
 ## 1.2.0
 
 - Added `Door Obstruction Collision`, an MCM toggle that stops moving doors when their collision shape intersects environment collision. Loot items are ignored, and concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings.

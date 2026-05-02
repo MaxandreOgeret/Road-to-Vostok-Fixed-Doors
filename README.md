@@ -24,7 +24,7 @@ Other mods that rewrite door opening direction or door collision behavior may co
 
 ## Repository Layout
 
-The packaged mod consists of `mod.txt` and the `FixedDoors/` directory. Runtime logic lives in `FixedDoors/Main.gd`, and MCM configuration lives in `FixedDoors/Config.gd`.
+The packaged mod consists of `mod.txt`, the `FixedDoors/` runtime directory, `FixedDoors_LICENSE`, and `FixedDoors_NOTICE`. Runtime logic lives in `FixedDoors/Main.gd`, and MCM configuration lives in `FixedDoors/Config.gd`.
 
 The repository also includes [doc/game-sync.md](doc/game-sync.md), which documents the parts of the mod that intentionally depend on decompiled game logic and should be reviewed after a game update.
 
@@ -36,7 +36,7 @@ Create the mod archive from the repository root with:
 ./scripts/build_vmz.sh
 ```
 
-That produces `FixedDoors.vmz`, which is a regular zip archive with the `.vmz` extension. The root of the archive contains `mod.txt` and the `FixedDoors/` directory.
+That produces `FixedDoors.vmz`, which is a regular zip archive with the `.vmz` extension. The root of the archive contains only `mod.txt`, the `FixedDoors/` runtime directory, `FixedDoors_LICENSE`, and `FixedDoors_NOTICE`.
 
 The build also produces `FixedDoors.zip`, which is a regular zip file that contains the `.vmz` archive for distribution on sites that expect `.zip` uploads.
 
@@ -74,7 +74,7 @@ The mod requires `Road to Vostok` and the community mod loader format used by th
 
 ## Licensing
 
-The repository code is GPL-3.0 licensed. See [LICENSE](LICENSE).
+The repository code is GPL-3.0 licensed. See [LICENSE](LICENSE). The packaged VMZ includes the same license and attribution material as `FixedDoors_LICENSE` and `FixedDoors_NOTICE` to avoid generic root filenames.
 
 ## References
 

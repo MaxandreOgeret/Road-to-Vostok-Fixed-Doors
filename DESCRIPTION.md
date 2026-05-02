@@ -43,3 +43,5 @@ https://github.com/MaxandreOgeret/Road-to-Vostok-Fixed-Doors
 ## Third-Party Asset Notices
 
 Fixed Doors contains no bundled third-party assets.
+
+The packaged VMZ includes `FixedDoors_LICENSE` and `FixedDoors_NOTICE` for license and attribution details.
