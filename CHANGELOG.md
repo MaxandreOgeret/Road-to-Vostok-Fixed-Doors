@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.1
 
 - Restricted VMZ packaging to the runtime mod files plus prefixed `FixedDoors_LICENSE` and `FixedDoors_NOTICE` attribution files.
 
