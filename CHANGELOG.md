@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0
+
+- Added `Door Obstruction Collision`, an MCM toggle that stops moving doors when their collision shape intersects environment collision. Loot items are ignored, and concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings.
+- Added `Obstruction Box Scale`, an MCM slider for the reduced obstruction query proxy used by concave door collision shapes.
+- Blocked opening doors stay logically open, and blocked closing doors stay logically closed, so the next interaction reverses from the paused position.
+- Added `Door Collision Logging`, an MCM toggle for Godot log diagnostics around door collision mode changes and obstruction stops.
+
 ## 1.1.0
 
 - Added MCM toggles for settled-open door collision and opening/closing door collision.

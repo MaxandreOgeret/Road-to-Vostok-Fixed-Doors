@@ -13,7 +13,7 @@ The goal is simple: fewer awkward door swings, less backing up from doors, and a
 - Normal hinged doors open away from the player
 - Open, opening, and closing doors no longer block player movement
 - Door bodies stay interactable while pass-through is active
-- Optional MCM toggles for opened-door and moving-door collision
+- Optional MCM controls for opened-door, moving-door, door-obstruction collision, obstruction proxy scale, and collision logging
 - Keeps the game's existing door interaction flow
 - Preserves locked doors, jammed doors, occupied-door checks, sounds, handle animation, and close behavior
 - Does not replace `Door.gd`, `Interactor.gd`, or scene files
@@ -22,7 +22,11 @@ The goal is simple: fewer awkward door swings, less backing up from doors, and a
 
 Door swings are a small detail, but they matter when moving through tight interiors. Fixed Doors makes door behavior more predictable and keeps doors from blocking narrow paths unless they are fully closed.
 
-If Mod Configuration Menu is installed, collision can be configured separately with `Opened Door Collision (Newly Opened Only)` and `Opening/Closing Door Collision`.
+If Mod Configuration Menu is installed, collision can be configured separately with `Opened Door Collision (Newly Opened Only)`, `Opening/Closing Door Collision`, `Door Obstruction Collision`, and `Obstruction Box Scale`.
+
+When `Door Obstruction Collision` is enabled, moving doors pause at the last non-overlapping position if they hit environment collision, such as map geometry, static props, or another door. Loot items are ignored. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings. `Obstruction Box Scale` controls that temporary query proxy, not the real door collision shape. Interrupted opening doors remain logically open, and interrupted closing doors remain logically closed.
+
+`Door Collision Logging` can be enabled for troubleshooting collision mode changes and obstruction stops in `user://fixeddoors_collision.log` and the Godot log.
 
 It is meant to feel like the same doors, just with the opening direction corrected at the moment you interact with them.
 

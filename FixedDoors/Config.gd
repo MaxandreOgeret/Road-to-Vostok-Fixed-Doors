@@ -9,6 +9,9 @@ const CONFIG_FILE := "config.ini"
 const MCM_HELPERS_RES := "res://ModConfigurationMenu/Scripts/Doink Oink/MCM_Helpers.tres"
 const OPENED_DOOR_COLLISION_KEY := "opened_door_collision"
 const MOVING_DOOR_COLLISION_KEY := "moving_door_collision"
+const DOOR_OBSTRUCTION_COLLISION_KEY := "door_obstruction_collision"
+const OBSTRUCTION_BOX_SCALE_KEY := "obstruction_box_scale"
+const COLLISION_LOGGING_KEY := "collision_logging"
 
 var _config := ConfigFile.new()
 var _mcm_helpers: Resource
@@ -46,6 +49,15 @@ func get_bool(setting_key: String, default_value: bool = false) -> bool:
 	if value is Dictionary:
 		return bool((value as Dictionary).get("value", default_value))
 	return bool(value)
+
+
+func get_float(setting_key: String, default_value: float = 0.0) -> float:
+	var value: Variant = _config.get_value("Float", setting_key, default_value)
+	if value is Dictionary:
+		value = (value as Dictionary).get("value", default_value)
+	if value is float or value is int:
+		return float(value)
+	return default_value
 
 
 func _on_config_saved(config: ConfigFile) -> void:
@@ -91,6 +103,64 @@ func _build_default_config() -> ConfigFile:
 				"default": false,
 				"value": false,
 				"menu_pos": 20,
+			}
+		)
+	)
+	(
+		config
+		. set_value(
+			"Bool",
+			DOOR_OBSTRUCTION_COLLISION_KEY,
+			{
+				"name": "Door Obstruction Collision",
+				"tooltip":
+				(
+					"Stop opening or closing doors when their collision shape intersects"
+					+ " environment collision. Loot items are ignored."
+				),
+				"default": false,
+				"value": false,
+				"menu_pos": 30,
+			}
+		)
+	)
+	(
+		config
+		. set_value(
+			"Float",
+			OBSTRUCTION_BOX_SCALE_KEY,
+			{
+				"name": "Obstruction Box Scale",
+				"tooltip":
+				(
+					"Multiplier for the temporary obstruction proxy used by concave"
+					+ " door collision shapes. Lower values are less likely to catch"
+					+ " door frames, but may miss narrow obstructions."
+				),
+				"default": 0.7,
+				"value": 0.7,
+				"minRange": 0.25,
+				"maxRange": 1.0,
+				"step": 0.05,
+				"menu_pos": 40,
+			}
+		)
+	)
+	(
+		config
+		. set_value(
+			"Bool",
+			COLLISION_LOGGING_KEY,
+			{
+				"name": "Door Collision Logging",
+				"tooltip":
+				(
+					"Write Fixed Doors collision mode changes and obstruction stops"
+					+ " to user://fixeddoors_collision.log and the Godot log."
+				),
+				"default": false,
+				"value": false,
+				"menu_pos": 50,
 			}
 		)
 	)

@@ -23,6 +23,10 @@ The base script currently toggles `isOpen` inside `Interact()` and animates towa
 
 By default, doors are pass-through unless they are closed. With MCM installed, `Opened Door Collision (Newly Opened Only)` controls settled-open doors, and `Opening/Closing Door Collision` controls doors while they are moving. Normal collision always returns when the door is closed again.
 
+With MCM installed, `Door Obstruction Collision` can stop a moving door at the last non-overlapping pose when its collision shape intersects environment collision, such as map geometry, static props, or another door. Loot items are ignored. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings, and `Obstruction Box Scale` controls that temporary query proxy. The real door collision shape is not resized. The mod uses the base script's `isOpen` value as the logical direction state when stopping: interrupted opening doors remain open, and interrupted closing doors remain closed.
+
+`Door Collision Logging` writes collision mode transitions and obstruction stops to `user://fixeddoors_collision.log` and the Godot log with the `[FixedDoors][Collision]` prefix.
+
 ## Interactor Lookup
 
 Reference files from the decompiled game:
@@ -39,3 +43,13 @@ The mod uses the live interactor target to find the door the player is using. If
 The opening direction is based on which side of the closed door plane the player is standing on. The mod reconstructs the door's closed basis from `defaultRotation` and the parent transform, then tests the player position against the door's local Z axis.
 
 If a game update changes door meshes, pivots, or exports `openAngle` on a different child node, review `_player_closed_side()` and `_closed_door_basis()` in `FixedDoors/Main.gd`.
+
+## Door Obstruction Queries
+
+Reference files from the decompiled game:
+
+- `res://Scripts/Door.gd`
+- normal hinged door scenes under `res://Modular/Doors/`
+- object and container door scenes under `res://Assets/`
+
+The obstruction feature depends on the moving door body exposing its collision shape under an interactable collider. The mod excludes all collision bodies under the moving door and all known player collision bodies, then queries each interactable door `CollisionShape3D` against environment collision layers. Concave shapes are approximated with a reduced box proxy. If door scene ownership or collider layout changes, review `_door_collision_objects()`, `_door_obstruction_shapes()`, and `_shape_obstruction()` in `FixedDoors/Main.gd`.
