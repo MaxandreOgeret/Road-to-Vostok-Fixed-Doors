@@ -1,7 +1,7 @@
 [mod]
 name="Fixed Doors"
 id="fixed_doors"
-version="1.2.1"
+version="1.2.2"
 priority=10
 
 [autoload]
