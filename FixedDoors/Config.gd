@@ -33,6 +33,8 @@ func _ready() -> void:
 		_config = defaults
 		_config.save(config_path)
 
+	_reset_session_only_settings()
+
 	if _mcm_helpers != null and _mcm_helpers.has_method("RegisterConfiguration"):
 		_mcm_helpers.call(
 			"RegisterConfiguration",
@@ -63,6 +65,22 @@ func get_float(setting_key: String, default_value: float = 0.0) -> float:
 func _on_config_saved(config: ConfigFile) -> void:
 	_config = config
 	settings_changed.emit()
+
+
+func _reset_session_only_settings() -> void:
+	var value: Variant = _config.get_value("Bool", COLLISION_LOGGING_KEY, false)
+	if value is Dictionary:
+		var data := (value as Dictionary).duplicate(true)
+		if not bool(data.get("value", false)):
+			return
+		data["value"] = false
+		_config.set_value("Bool", COLLISION_LOGGING_KEY, data)
+	elif bool(value):
+		_config.set_value("Bool", COLLISION_LOGGING_KEY, false)
+	else:
+		return
+
+	_config.save(_config_path())
 
 
 func _load_mcm_helpers() -> Resource:
@@ -157,6 +175,7 @@ func _build_default_config() -> ConfigFile:
 				(
 					"Write Fixed Doors collision mode changes and obstruction stops"
 					+ " to user://fixeddoors_collision.log and the Godot log."
+					+ " Resets to disabled when the game starts."
 				),
 				"default": false,
 				"value": false,

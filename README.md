@@ -12,7 +12,7 @@ When Mod Configuration Menu is installed, `Opened Door Collision (Newly Opened O
 
 `Door Obstruction Collision` can also be enabled to stop opening doors when their collision shape intersects environment collision, such as map geometry, static props, or another door. Closing doors are not obstruction-blocked, so the player can close a door that opened into an obstruction. Loot items are ignored. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings. `Obstruction Box Scale` controls that temporary query proxy; it does not resize the door's real collision shape. A blocked opening door is left logically open, so the next interaction closes from the paused position.
 
-`Door Collision Logging` writes collision mode changes and obstruction stops to `user://fixeddoors_collision.log` and the Godot log for troubleshooting.
+`Door Collision Logging` writes collision mode changes and obstruction stops to `user://fixeddoors_collision.log` and the Godot log for troubleshooting. It is session-only and resets to disabled each time the game starts.
 
 Locked, jammed, and occupied doors are not bypassed.
 

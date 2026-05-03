@@ -4,6 +4,7 @@
 
 - Changed obstruction handling to block opening doors only, so closing can recover doors that opened into environment props.
 - Fixed obstruction handling so doors that are already overlapping an obstruction can still move out of it before later clear-to-block transitions are enforced.
+- Made `Door Collision Logging` session-only so it resets to disabled on game start.
 
 ## 1.2.1
 

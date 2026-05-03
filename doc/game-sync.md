@@ -25,7 +25,7 @@ By default, doors are pass-through unless they are closed. With MCM installed, `
 
 With MCM installed, `Door Obstruction Collision` can stop an opening door at the last non-overlapping pose when its collision shape intersects environment collision, such as map geometry, static props, or another door. Loot items are ignored. Closing doors are not obstruction-blocked, so the player can close a door that opened into an obstruction. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings, and `Obstruction Box Scale` controls that temporary query proxy. The real door collision shape is not resized. Interrupted opening doors remain logically open, so the next interaction closes from the paused position.
 
-`Door Collision Logging` writes collision mode transitions and obstruction stops to `user://fixeddoors_collision.log` and the Godot log with the `[FixedDoors][Collision]` prefix.
+`Door Collision Logging` writes collision mode transitions and obstruction stops to `user://fixeddoors_collision.log` and the Godot log with the `[FixedDoors][Collision]` prefix. It is session-only and resets to disabled each time the game starts.
 
 ## Interactor Lookup
 
