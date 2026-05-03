@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Changed obstruction handling to block opening doors only, so closing can recover doors that opened into environment props.
+- Fixed obstruction handling so doors that are already overlapping an obstruction can still move out of it before later clear-to-block transitions are enforced.
+
 ## 1.2.1
 
 - Restricted VMZ packaging to the runtime mod files plus prefixed `FixedDoors_LICENSE` and `FixedDoors_NOTICE` attribution files.

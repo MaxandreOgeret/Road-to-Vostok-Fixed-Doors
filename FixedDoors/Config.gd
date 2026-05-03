@@ -115,7 +115,7 @@ func _build_default_config() -> ConfigFile:
 				"name": "Door Obstruction Collision",
 				"tooltip":
 				(
-					"Stop opening or closing doors when their collision shape intersects"
+					"Stop opening doors when their collision shape intersects"
 					+ " environment collision. Loot items are ignored."
 				),
 				"default": false,

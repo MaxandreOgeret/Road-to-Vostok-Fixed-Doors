@@ -392,7 +392,12 @@ func _activate_door(door: Node3D) -> void:
 	record["opened_door_collision_enabled"] = _opened_door_collision_enabled
 	record["moving_door_collision_enabled"] = _moving_door_collision_enabled
 	record["obstruction_debug_logged"] = false
-	_store_last_safe_door_pose(door, record)
+	record["obstruction_initial_overlap_logged"] = false
+	record["obstruction_closing_skip_logged"] = false
+	record["obstruction_had_clear_pose"] = false
+	if not _door_obstruction_collision_enabled or _door_is_near_obstruction_start_pose(door):
+		_store_last_safe_door_pose(door, record)
+		record["obstruction_had_clear_pose"] = true
 	_log_collision(
 		(
 			(
@@ -434,9 +439,6 @@ func _sync_active_door_obstructions() -> void:
 func _sync_door_obstruction(door: Node3D, record: Dictionary) -> void:
 	if not bool(record["has_animation_time"]):
 		return
-	if not _door_is_moving(door, true):
-		_store_last_safe_door_pose(door, record)
-		return
 	if _door_is_near_obstruction_start_pose(door):
 		_log_collision(
 			(
@@ -445,9 +447,40 @@ func _sync_door_obstruction(door: Node3D, record: Dictionary) -> void:
 			)
 		)
 		_store_last_safe_door_pose(door, record)
+		record["obstruction_had_clear_pose"] = true
+		return
+
+	if not bool(door.get(&"isOpen")):
+		if not bool(record.get("obstruction_closing_skip_logged", false)):
+			record["obstruction_closing_skip_logged"] = true
+			_log_collision(
+				(
+					"obstruction_skip door=%s reason=closing position=%s rotation=%s"
+					% [_door_label(door), door.position, door.rotation_degrees]
+				)
+			)
 		return
 
 	if _door_has_obstruction(door, record):
+		if not bool(record.get("obstruction_had_clear_pose", false)):
+			if not bool(record.get("obstruction_initial_overlap_logged", false)):
+				record["obstruction_initial_overlap_logged"] = true
+				_log_collision(
+					(
+						(
+							"obstruction_skip door=%s reason=overlapping_before_clear"
+							+ " obstruction=%s position=%s rotation=%s"
+						)
+						% [
+							_door_label(door),
+							record.get("last_obstruction", "unknown"),
+							door.position,
+							door.rotation_degrees,
+						]
+					)
+				)
+			return
+
 		var logical_open := bool(door.get(&"isOpen"))
 		_log_collision(
 			(
@@ -468,6 +501,7 @@ func _sync_door_obstruction(door: Node3D, record: Dictionary) -> void:
 		return
 
 	_store_last_safe_door_pose(door, record)
+	record["obstruction_had_clear_pose"] = true
 
 
 func _door_has_obstruction(door: Node3D, record: Dictionary) -> bool:

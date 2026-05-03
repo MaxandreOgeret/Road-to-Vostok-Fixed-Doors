@@ -24,7 +24,7 @@ Door swings are a small detail, but they matter when moving through tight interi
 
 If Mod Configuration Menu is installed, collision can be configured separately with `Opened Door Collision (Newly Opened Only)`, `Opening/Closing Door Collision`, `Door Obstruction Collision`, and `Obstruction Box Scale`.
 
-When `Door Obstruction Collision` is enabled, moving doors pause at the last non-overlapping position if they hit environment collision, such as map geometry, static props, or another door. Loot items are ignored. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings. `Obstruction Box Scale` controls that temporary query proxy, not the real door collision shape. Interrupted opening doors remain logically open, and interrupted closing doors remain logically closed.
+When `Door Obstruction Collision` is enabled, opening doors pause at the last non-overlapping position if they hit environment collision, such as map geometry, static props, or another door. Closing doors are not obstruction-blocked, so the player can close a door that opened into an obstruction. Loot items are ignored. Concave door shapes use a reduced obstruction proxy to avoid catching the door frame during normal swings. `Obstruction Box Scale` controls that temporary query proxy, not the real door collision shape. Interrupted opening doors remain logically open.
 
 `Door Collision Logging` can be enabled for troubleshooting collision mode changes and obstruction stops in `user://fixeddoors_collision.log` and the Godot log.
 
